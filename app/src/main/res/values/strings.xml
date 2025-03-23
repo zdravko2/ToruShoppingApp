@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ToruShoppingApp</string>
+    <string name="login">Login</string>
+    <string name="search_product">Search product...</string>
+    <string name="to_do">To Do</string>
+    <string name="category">Category</string>
+    <string name="popular">Popular</string>
+    <string name="see_all">See all</string>
+    <string name="explore">Explore</string>
+    <string name="cart">Cart</string>
+    <string name="favorites">Favorites</string>
+    <string name="orders">Orders</string>
+    <string name="profile">Profile</string>
+    <string name="back">Back</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="quantity">Quantity</string>
+    <string name="description">Description</string>
+    <string name="reviews">Reviews</string>
+    <string name="enter_your_discount_code">Enter your Discount Code</string>
+    <string name="apply">Apply</string>
+    <string name="proceed_to_checkout">Proceed To Checkout</string>
+</resources>

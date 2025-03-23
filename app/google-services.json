@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "400296120559",
+    "firebase_url": "https://torushoppingapp-default-rtdb.firebaseio.com",
+    "project_id": "torushoppingapp",
+    "storage_bucket": "torushoppingapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400296120559:android:158db08f4a28f96bcb0b1a",
+        "android_client_info": {
+          "package_name": "com.example.torushoppingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2MiAH1ntNvPCQKk8ShAxgDRn3rVgv6ww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
