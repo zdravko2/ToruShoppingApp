@@ -48,6 +48,7 @@ class CategoryAdapter(val items:MutableList<CategoryModel>) :
                 ContextCompat.startActivity(context, intent, null)
             }, 100)
         }
+
         if (selectedPosition == position) {
             holder.binding.titleCat.setBackgroundResource(R.drawable.dark_blue_bg)
             holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.white))

@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         binding.cartButton.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
         }
+
+        binding.profileButton.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun initBanner() {

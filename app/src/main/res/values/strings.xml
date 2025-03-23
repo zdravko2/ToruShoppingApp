@@ -19,4 +19,7 @@
     <string name="enter_your_discount_code">Enter your Discount Code</string>
     <string name="apply">Apply</string>
     <string name="proceed_to_checkout">Proceed To Checkout</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="register_here">Don\'t have an account? Register here</string>
 </resources>
