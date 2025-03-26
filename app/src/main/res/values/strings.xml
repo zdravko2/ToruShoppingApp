@@ -22,4 +22,8 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="register_here">Don\'t have an account? Register here</string>
+    <string name="order_id">Order ID</string>
+    <string name="total_price">Total price</string>
+    <string name="status">Status</string>
+    <string name="order_details">Order Details</string>
 </resources>

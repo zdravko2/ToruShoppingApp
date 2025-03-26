@@ -1,6 +1,6 @@
 package com.example.torushoppingapp.Domain
 
-data class Cart(
+data class CartModel(
     val id:String = "",
     val productId:String = "",
     val userId:String = "",

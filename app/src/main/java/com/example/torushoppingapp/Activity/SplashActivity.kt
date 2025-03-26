@@ -21,6 +21,11 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         setContentView(binding.root)
 
+        initButtons()
+    }
+
+    private fun initButtons()
+    {
         binding.loginButton.setOnClickListener {
             val email = binding.emailText.text.toString().trim()
             val password = binding.passwordText.text.toString().trim()
@@ -30,15 +35,24 @@ class SplashActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val userLiveData = MainRepository().validateUser(email, password)
-            userLiveData.observe(this) { user ->
-                if (user != null) {
-                    Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
-                }
+            tryLogin(email, password)
+        }
+
+        binding.registerButton.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    private fun tryLogin(email:String, password:String)
+    {
+        val userLiveData = MainRepository().validateUser(email, password)
+        userLiveData.observe(this) { user ->
+            if (user != null) {
+                Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
             }
         }
     }

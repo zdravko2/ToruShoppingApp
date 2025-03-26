@@ -10,7 +10,7 @@ import com.example.torushoppingapp.databinding.ActivityProductDetailBinding
 
 class ProductDetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityProductDetailBinding
-    private lateinit var item: ProductModel
+    private lateinit var product: ProductModel
     private lateinit var managementCart: ManagementCart
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,19 +26,19 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun bundle() {
         binding.apply {
-            item = intent.getSerializableExtra("object") as ProductModel
+            product = intent.getSerializableExtra("object") as ProductModel
 
             Glide.with(this@ProductDetailActivity)
-                .load(item.picURL)
+                .load(product.picURL)
                 .into(binding.picMain)
 
-            titleText.text = item.title
-            descriptionText.text = item.description
-            priceText.text = "$" + item.price.toString()
+            titleText.text = product.title
+            descriptionText.text = product.description
+            priceText.text = "$" + product.price.toString()
 
             addToCartButton.setOnClickListener {
-                item.numberInCart = 1
-                managementCart.insertItems(item)
+                product.numberInCart = 1
+                managementCart.insertItems(product)
             }
 
             backButton.setOnClickListener {

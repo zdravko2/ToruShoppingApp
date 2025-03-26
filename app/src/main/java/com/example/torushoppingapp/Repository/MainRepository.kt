@@ -25,8 +25,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<BannerModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(BannerModel::class.java)
-                    item?.let { list.add(it) }
+                    val banner = childSnapshot.getValue(BannerModel::class.java)
+                    banner?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -45,8 +45,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<CategoryModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(CategoryModel::class.java)
-                    item?.let { list.add(it) }
+                    val category = childSnapshot.getValue(CategoryModel::class.java)
+                    category?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -65,8 +65,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ProductModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(ProductModel::class.java)
-                    item?.let { list.add(it) }
+                    val product = childSnapshot.getValue(ProductModel::class.java)
+                    product?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -87,8 +87,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ProductModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(ProductModel::class.java)
-                    item?.let { list.add(it) }
+                    val product = childSnapshot.getValue(ProductModel::class.java)
+                    product?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -135,8 +135,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<UserModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(UserModel::class.java)
-                    item?.let { list.add(it) }
+                    val user = childSnapshot.getValue(UserModel::class.java)
+                    user?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -158,8 +158,8 @@ class MainRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ReviewModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(ReviewModel::class.java)
-                    item?.let { list.add(it) }
+                    val review = childSnapshot.getValue(ReviewModel::class.java)
+                    review?.let { list.add(it) }
                 }
                 listData.value = list
             }
@@ -176,13 +176,13 @@ class MainRepository {
         val listData = MutableLiveData<MutableList<OrderModel>>()
         val ref = firebaseDatabase.getReference("orders")
 
-        val query:Query = ref.orderByChild("order_id").equalTo(userId)
+        val query:Query = ref.orderByChild("user_id").equalTo(userId)
         query.addListenerForSingleValueEvent(object:ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<OrderModel>()
                 for (childSnapshot in snapshot.children) {
-                    val item = childSnapshot.getValue(OrderModel::class.java)
-                    item?.let { list.add(it) }
+                    val order = childSnapshot.getValue(OrderModel::class.java)
+                    order?.let { list.add(it) }
                 }
                 listData.value = list
             }

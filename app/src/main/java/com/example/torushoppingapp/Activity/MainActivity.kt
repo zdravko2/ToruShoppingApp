@@ -2,18 +2,14 @@ package com.example.torushoppingapp.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.torushoppingapp.Adapter.CategoryAdapter
 import com.example.torushoppingapp.Adapter.PopularAdapter
-import com.example.torushoppingapp.R
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityMainBinding
 
@@ -37,8 +33,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomMenu()
     {
+        binding.exploreButton.setOnClickListener {
+
+        }
+
         binding.cartButton.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
+        }
+
+        binding.favoritesButton.setOnClickListener {
+
+        }
+
+        binding.ordersButton.setOnClickListener {
+            startActivity(Intent(this, OrderListActivity::class.java))
         }
 
         binding.profileButton.setOnClickListener {
