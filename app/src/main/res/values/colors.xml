@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="dark">#05445E</color>
+    <color name="light">#FFFFFFFF</color>
 
-    <color name="dark_blue">#05445E</color>
-    <color name="blue">#189AB4</color>
-    <color name="cyan">#75E6DA</color>
-    <color name="pale_blue">#D4F1F4</color>
+    <color name="main_background">#05445E</color>
+    <color name="background">#189AB4</color>
+    <color name="menu_dark">#05445E</color>
+    <color name="menu_light">#D4F1F4</color>
+    <color name="text">#D4F1F4</color>
 </resources>

@@ -41,7 +41,7 @@
         android:layout_marginTop="16dp"
         android:maxWidth="210dp"
         android:text="@string/title"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/dark"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/mainPic"
@@ -54,7 +54,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/placeholder_price"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/quantity"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/dark"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/titleText"
@@ -77,5 +77,5 @@
         app:layout_constraintEnd_toEndOf="@+id/price_text"
         app:layout_constraintTop_toTopOf="@+id/titleText"
         app:srcCompat="@drawable/close"
-        app:tint="@color/dark_blue" />
+        app:tint="@color/dark" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pale_blue"
+    android:background="@color/text"
     tools:context=".Activity.ProductListActivity">
 
     <ScrollView
@@ -45,7 +45,7 @@
                         android:layout_marginBottom="8dp"
                         android:contentDescription="@string/to_do"
                         app:srcCompat="@drawable/back"
-                        app:tint="@color/white" />
+                        app:tint="@color/light" />
 
                     <TextView
                         android:id="@+id/textView2"
@@ -54,7 +54,7 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:text="@string/back"
-                        android:textColor="@color/white"
+                        android:textColor="@color/light"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/dark"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -109,7 +109,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/username"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/dark"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="name"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/dark"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView6" />
@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="email"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/dark"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/usernameText"
                 app:layout_constraintTop_toTopOf="@+id/textView7" />
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/email"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/dark"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView6"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />

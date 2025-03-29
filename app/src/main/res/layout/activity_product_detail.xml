@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pale_blue"
+    android:background="@color/light"
     tools:context=".Activity.ProductDetailActivity">
 
     <ScrollView
@@ -47,7 +47,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/favorite_white"
-                    app:tint="@color/dark_blue" />
+                    app:tint="@color/dark" />
 
                 <LinearLayout
                     android:id="@+id/backButton"
@@ -70,7 +70,7 @@
                         android:layout_marginBottom="8dp"
                         android:contentDescription="@string/to_do"
                         app:srcCompat="@drawable/back"
-                        app:tint="@color/white" />
+                        app:tint="@color/light" />
 
                     <TextView
                         android:id="@+id/textView2"
@@ -79,7 +79,7 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:text="@string/back"
-                        android:textColor="@color/white"
+                        android:textColor="@color/light"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="380dp"
-                android:background="@drawable/pale_blue_top_corner_bg"
+                android:background="@drawable/white_top_corner_bg"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout">
 
@@ -100,7 +100,7 @@
                     android:layout_margin="18dp"
                     android:text="Title text"
                     android:textAlignment="center"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/dark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -113,10 +113,10 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_margin="16dp"
                         android:text="@string/quantity"
-                        android:textColor="@color/dark_blue"
+                        android:textColor="@color/dark"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -130,9 +130,9 @@
                             android:id="@+id/minusButton"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:text="-"
                             android:gravity="center"
-                            android:textColor="@color/dark_blue"
+                            android:text="-"
+                            android:textColor="@color/dark"
                             android:textSize="21sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -145,7 +145,7 @@
                             android:layout_height="28dp"
                             android:gravity="center"
                             android:text="1"
-                            android:textColor="@color/dark_blue"
+                            android:textColor="@color/dark"
                             android:textSize="21sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -159,7 +159,7 @@
                             android:layout_height="28dp"
                             android:gravity="center"
                             android:text="+"
-                            android:textColor="@color/dark_blue"
+                            android:textColor="@color/dark"
                             android:textSize="21sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -175,7 +175,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="24dp"
                         android:numStars="5"
-                        android:progressTint="@color/dark_blue"
+                        android:progressTint="@color/main_background"
                         android:rating="4" />
 
                     <LinearLayout
@@ -194,7 +194,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="8dp"
                             android:text="9"
-                            android:textColor="@color/white"
+                            android:textColor="@color/light"
                             android:textStyle="bold" />
 
                         <TextView
@@ -207,7 +207,7 @@
                             android:layout_marginEnd="16dp"
                             android:layout_weight="1"
                             android:text="@string/reviews"
-                            android:textColor="@color/white"
+                            android:textColor="@color/light"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/description"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/dark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -228,7 +228,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:text="Lorem ipsum"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/dark"
                     android:textSize="18sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -245,7 +245,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:text="@string/add_to_cart"
-                        android:textColor="@color/white"
+                        android:textColor="@color/light"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -258,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="32dp"
                         android:text="price"
-                        android:textColor="@color/white"
+                        android:textColor="@color/light"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -271,7 +271,7 @@
                         android:layout_height="0dp"
                         android:layout_marginHorizontal="32dp"
                         android:layout_marginVertical="12dp"
-                        android:background="@color/white"
+                        android:background="@color/light"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/price_text"
                         app:layout_constraintTop_toTopOf="parent" />

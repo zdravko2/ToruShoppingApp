@@ -42,7 +42,7 @@
         android:layout_marginTop="16dp"
         android:maxWidth="200dp"
         android:text="Title"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/dark"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:numStars="5"
-        android:progressTint="@color/dark_blue"
+        android:progressTint="@color/dark"
         android:rating="4"
         app:layout_constraintBottom_toTopOf="@+id/price_text"
         app:layout_constraintStart_toStartOf="parent" />
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="$-"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/dark"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/titleText" />

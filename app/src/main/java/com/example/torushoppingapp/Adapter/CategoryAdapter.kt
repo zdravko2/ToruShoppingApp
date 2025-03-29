@@ -56,10 +56,10 @@ class CategoryAdapter(val categories:MutableList<CategoryModel>) :
 
             if (selectedPosition == position) {
                 holder.binding.titleCat.setBackgroundResource(R.drawable.dark_blue_bg)
-                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.white))
+                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.light))
             } else {
                 holder.binding.titleCat.setBackgroundResource(R.drawable.white_bg)
-                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.dark_blue))
+                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.main_background))
             }
         }
 

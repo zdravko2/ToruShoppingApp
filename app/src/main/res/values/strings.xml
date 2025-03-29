@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ToruShoppingApp</string>
     <string name="login">Login</string>
-    <string name="search_product">Search product…</string>
+    <string name="hint_search_product">Search product…</string>
     <string name="to_do">To Do</string>
     <string name="category">Category</string>
     <string name="popular">Popular</string>
@@ -32,4 +32,7 @@
     <string name="placeholder_price">$-</string>
     <string name="title_order">Order</string>
     <string name="title_list">List</string>
+    <string name="register">Register</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
 </resources>

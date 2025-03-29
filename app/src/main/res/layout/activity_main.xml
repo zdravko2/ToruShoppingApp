@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pale_blue"
+    android:background="@color/text"
     tools:context=".Activity.MainActivity">
 
     <androidx.core.widget.NestedScrollView
@@ -36,18 +36,18 @@
                     android:drawableStart="@drawable/search_icon"
                     android:drawablePadding="12dp"
                     android:ems="10"
-                    android:hint="@string/search_product"
+                    android:hint="@string/hint_search_product"
                     android:inputType="text"
                     android:padding="12dp"
-                    android:textColor="@color/dark_blue"
-                    android:textColorHint="@color/dark_blue" />
+                    android:textColor="@color/dark"
+                    android:textColorHint="@color/dark" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/settingsButton"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/dark_blue_bg"
+                    android:background="@drawable/menu_dark_bg"
                     android:contentDescription="@string/to_do"
                     android:padding="12dp"
                     app:srcCompat="@drawable/settings" />
@@ -76,7 +76,7 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminateTint="@color/blue"
+                    android:indeterminateTint="@color/background"
                     android:indeterminateTintMode="src_in"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/category"
-                android:textColor="@color/black"
+                android:textColor="@color/dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminateTint="@color/blue"
+                    android:indeterminateTint="@color/background"
                     android:indeterminateTintMode="src_in"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/popular"
-                    android:textColor="@color/black"
+                    android:textColor="@color/dark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/see_all"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/dark" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,7 +163,7 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminateTint="@color/blue"
+                    android:indeterminateTint="@color/background"
                     android:indeterminateTintMode="src_in"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -194,11 +194,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="bottom"
-            android:background="@color/dark_blue">
+            android:background="@color/menu_dark">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -217,6 +219,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
+                        android:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_1" />
 
                     <TextView
@@ -226,7 +229,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/explore"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/menu_light"
                         android:textSize="11sp" />
                 </LinearLayout>
 
@@ -242,6 +245,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
+                        android:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_2" />
 
                     <TextView
@@ -250,7 +254,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/cart"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/menu_light"
                         android:textSize="11sp" />
                 </LinearLayout>
 
@@ -267,6 +271,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
+                        android:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_3" />
 
                     <TextView
@@ -275,7 +280,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/favorites"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/menu_light"
                         android:textSize="11sp" />
                 </LinearLayout>
 
@@ -291,6 +296,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
+                        android:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_4" />
 
                     <TextView
@@ -299,7 +305,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/orders"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/menu_light"
                         android:textSize="11sp" />
                 </LinearLayout>
 
@@ -315,6 +321,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
+                        android:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_5" />
 
                     <TextView
@@ -323,7 +330,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/profile"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/menu_light"
                         android:textSize="11sp" />
                 </LinearLayout>
 
