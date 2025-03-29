@@ -1,17 +1,9 @@
 package com.example.torushoppingapp.Activity
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.torushoppingapp.Domain.UserModel
-import com.example.torushoppingapp.R
-import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityProfileBinding
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
-import com.google.firebase.database.values
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -19,7 +11,6 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

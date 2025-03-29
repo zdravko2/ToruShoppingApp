@@ -3,12 +3,9 @@ package com.example.torushoppingapp.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.torushoppingapp.R
 import com.example.torushoppingapp.Repository.MainRepository
 import com.example.torushoppingapp.databinding.ActivitySplashBinding
-import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
 
@@ -16,9 +13,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_splash)
         setContentView(binding.root)
 
         initButtons()

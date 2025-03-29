@@ -2,7 +2,6 @@ package com.example.torushoppingapp.Activity
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.torushoppingapp.Domain.ProductModel
@@ -14,7 +13,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,12 +30,20 @@ class ProductDetailActivity : AppCompatActivity() {
             addToCartButton.setOnClickListener {
                 Toast.makeText(this@ProductDetailActivity, "Added to cart", Toast.LENGTH_SHORT).show()
             }
+
+            reviewButton.setOnClickListener {
+
+            }
+
+            favoriteButton.setOnClickListener {
+                Toast.makeText(this@ProductDetailActivity, "Added to favorites", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun bundle() {
         binding.apply {
-            product = intent.getSerializableExtra("object") as ProductModel
+            product = intent. getSerializableExtra("object") as ProductModel
 
             Glide.with(this@ProductDetailActivity)
                 .load(product.picURL)
