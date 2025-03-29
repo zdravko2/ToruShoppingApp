@@ -16,10 +16,6 @@ import com.google.firebase.database.values
 class ProfileActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileBinding
-    private val viewModel = MainViewModel()
-    private var id:String = "0"
-    private var username:String = ""
-    private var email:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +25,13 @@ class ProfileActivity : AppCompatActivity() {
 
         initButtons()
         initProfile()
+    }
+
+    private fun initButtons()
+    {
+        binding.backButton.setOnClickListener{
+            finish()
+        }
     }
 
     private fun initProfile()
@@ -55,10 +58,4 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun initButtons()
-    {
-        binding.backButton.setOnClickListener{
-            finish()
-        }
-    }
 }
