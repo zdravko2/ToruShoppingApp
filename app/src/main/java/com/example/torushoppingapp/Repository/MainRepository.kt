@@ -2,11 +2,11 @@ package com.example.torushoppingapp.Repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.disklrucache.DiskLruCache.Value
 import com.example.torushoppingapp.Domain.BannerModel
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
+import com.example.torushoppingapp.Domain.OrderItem
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.Domain.ReviewModel
@@ -20,10 +20,10 @@ import com.google.firebase.database.ValueEventListener
 class MainRepository {
     private val firebaseDatabase = FirebaseDatabase.getInstance()
 
-    fun loadBanner():LiveData<MutableList<BannerModel>>{
+    fun loadBanner(): LiveData<MutableList<BannerModel>> {
         val listData = MutableLiveData<MutableList<BannerModel>>()
         val ref = firebaseDatabase.getReference("banners")
-        ref.addValueEventListener(object:ValueEventListener {
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<BannerModel>()
                 for (childSnapshot in snapshot.children) {
@@ -40,10 +40,10 @@ class MainRepository {
         return listData
     }
 
-    fun loadCategory():LiveData<MutableList<CategoryModel>>{
+    fun loadCategory(): LiveData<MutableList<CategoryModel>> {
         val listData = MutableLiveData<MutableList<CategoryModel>>()
         val ref = firebaseDatabase.getReference("categories")
-        ref.addValueEventListener(object:ValueEventListener {
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<CategoryModel>()
                 for (childSnapshot in snapshot.children) {
@@ -60,10 +60,10 @@ class MainRepository {
         return listData
     }
 
-    fun loadPopular():LiveData<MutableList<ProductModel>>{
+    fun loadPopular(): LiveData<MutableList<ProductModel>> {
         val listData = MutableLiveData<MutableList<ProductModel>>()
         val ref = firebaseDatabase.getReference("products")
-        ref.addValueEventListener(object:ValueEventListener {
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ProductModel>()
                 for (childSnapshot in snapshot.children) {
@@ -80,12 +80,12 @@ class MainRepository {
         return listData
     }
 
-    fun loadProductCategory(categoryId:String) : LiveData<MutableList<ProductModel>> {
+    fun loadProductCategory(categoryId: String): LiveData<MutableList<ProductModel>> {
         val listData = MutableLiveData<MutableList<ProductModel>>()
         val ref = firebaseDatabase.getReference("products")
 
-        val query:Query = ref.orderByChild("category_id").equalTo(categoryId)
-        query.addListenerForSingleValueEvent(object:ValueEventListener {
+        val query: Query = ref.orderByChild("category_id").equalTo(categoryId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ProductModel>()
                 for (childSnapshot in snapshot.children) {
@@ -127,13 +127,12 @@ class MainRepository {
         return userData
     }
 
-    fun loadUser(userId:String) : LiveData<MutableList<UserModel>>
-    {
+    fun loadUser(userId: String): LiveData<MutableList<UserModel>> {
         val listData = MutableLiveData<MutableList<UserModel>>()
         val ref = firebaseDatabase.getReference("users")
 
-        val query:Query = ref.orderByChild("user_id").equalTo(userId)
-        query.addListenerForSingleValueEvent(object:ValueEventListener {
+        val query: Query = ref.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<UserModel>()
                 for (childSnapshot in snapshot.children) {
@@ -151,13 +150,12 @@ class MainRepository {
         return listData
     }
 
-    fun loadProduct(productId:String) : LiveData<MutableList<ProductModel>>
-    {
+    fun loadProduct(productId: String): LiveData<MutableList<ProductModel>> {
         val listData = MutableLiveData<MutableList<ProductModel>>()
         val ref = firebaseDatabase.getReference("products")
 
-        val query:Query = ref.orderByChild("user_id").equalTo(productId)
-        query.addListenerForSingleValueEvent(object:ValueEventListener {
+        val query: Query = ref.orderByChild("user_id").equalTo(productId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ProductModel>()
                 for (childSnapshot in snapshot.children) {
@@ -175,12 +173,12 @@ class MainRepository {
         return listData
     }
 
-    fun loadReview(productId:String): LiveData<MutableList<ReviewModel>> {
+    fun loadReview(productId: String): LiveData<MutableList<ReviewModel>> {
         val listData = MutableLiveData<MutableList<ReviewModel>>()
         val ref = firebaseDatabase.getReference("reviews")
 
-        val query:Query = ref.orderByChild("product_id").equalTo(productId)
-        query.addListenerForSingleValueEvent(object:ValueEventListener {
+        val query: Query = ref.orderByChild("product_id").equalTo(productId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<ReviewModel>()
                 for (childSnapshot in snapshot.children) {
@@ -224,7 +222,7 @@ class MainRepository {
         return cartData
     }
 
-    fun loadProductsWithCartQuantity(userId: String): LiveData<MutableList<Pair<ProductModel, CartItem>>> {
+    fun loadProductsFromCart(userId: String): LiveData<MutableList<Pair<ProductModel, CartItem>>> {
         val liveData = MutableLiveData<MutableList<Pair<ProductModel, CartItem>>>()
         val cartRef = firebaseDatabase.getReference("cart")
         val productsRef = firebaseDatabase.getReference("products")
@@ -264,6 +262,7 @@ class MainRepository {
                                     liveData.value = productList
                                 }
                             }
+
                             override fun onCancelled(error: DatabaseError) {
                                 remainingItems--
                                 if (remainingItems == 0) {
@@ -282,14 +281,12 @@ class MainRepository {
         return liveData
     }
 
-
-
     fun loadOrder(userId: String): LiveData<MutableList<OrderModel>> {
         val listData = MutableLiveData<MutableList<OrderModel>>()
         val ref = firebaseDatabase.getReference("orders")
 
-        val query:Query = ref.orderByChild("user_id").equalTo(userId)
-        query.addListenerForSingleValueEvent(object:ValueEventListener {
+        val query: Query = ref.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<OrderModel>()
                 for (childSnapshot in snapshot.children) {
@@ -306,4 +303,60 @@ class MainRepository {
         })
         return listData
     }
+
+    fun loadProductsFromOrder(orderId: String): LiveData<MutableList<Pair<ProductModel, OrderItem>>> {
+        val liveData = MutableLiveData<MutableList<Pair<ProductModel, OrderItem>>>()
+        val orderRef = firebaseDatabase.getReference("orders").child(orderId).child("items")
+        val productsRef = firebaseDatabase.getReference("products")
+
+        orderRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val orderItems = mutableListOf<OrderItem>()
+                for (childSnapshot in snapshot.children) {
+                    val orderItem = childSnapshot.getValue(OrderItem::class.java)
+                    orderItem?.let { orderItems.add(it) }
+                }
+
+                if (orderItems.isEmpty()) {
+                    liveData.value = mutableListOf() // Return empty list if no order items
+                    return
+                }
+
+                val productList = mutableListOf<Pair<ProductModel, OrderItem>>()
+                var remainingItems = orderItems.size
+
+                // For each order item, fetch the product details
+                for (orderItem in orderItems) {
+                    val productId = orderItem.productId
+                    productsRef.child(productId).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(productSnapshot: DataSnapshot) {
+                            val product = productSnapshot.getValue(ProductModel::class.java)
+                            if (product != null) {
+                                productList.add(Pair(product, orderItem))
+                            }
+                            remainingItems--
+                            if (remainingItems == 0) {
+                                liveData.value = productList
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            remainingItems--
+                            if (remainingItems == 0) {
+                                liveData.value = productList
+                            }
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                liveData.value = mutableListOf() // Return empty list if loading fails
+            }
+        })
+
+        return liveData
+    }
+
+
 }

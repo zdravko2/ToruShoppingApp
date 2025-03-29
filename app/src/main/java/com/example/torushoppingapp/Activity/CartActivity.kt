@@ -2,16 +2,11 @@ package com.example.torushoppingapp.Activity
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.torushoppingapp.Activity.ProductListActivity
 import com.example.torushoppingapp.Adapter.CartAdapter
-import com.example.torushoppingapp.Adapter.ProductListCategoryAdapter
 import com.example.torushoppingapp.Domain.CartItem
-import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityCartBinding
@@ -19,7 +14,6 @@ import com.example.torushoppingapp.databinding.ActivityCartBinding
 class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private val viewModel = MainViewModel()
-    private var tax: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,27 +32,30 @@ class CartActivity : AppCompatActivity() {
 
     private fun observeCart() {
         val userId = "user_1" // Replace with your dynamic user ID
-        viewModel.loadProductsWithCartQuantity(userId).observe(this, Observer { productCartList ->
-            if (productCartList.isNullOrEmpty()) {
-                //binding.emptyCartText.visibility = View.VISIBLE
-                binding.listView.visibility = View.GONE
-                binding.totalFeeText.visibility = View.GONE // Hide totals if needed
+        binding.apply {
+            progressBar.visibility = View.VISIBLE
+            emptyCartText.visibility = View.GONE
+            viewModel.loadProductsFromCart(userId).observe(this@CartActivity, Observer { productCartList ->
+                if (productCartList.isNullOrEmpty()) {
+                    emptyCartText.visibility = View.VISIBLE
+                    listView.visibility = View.GONE
+                    totalFeeText.visibility = View.GONE
+                    deliveryText.visibility = View.GONE
+                    totalTaxText.visibility = View.GONE
+                } else {
+                    listView.visibility = View.VISIBLE
+                    totalFeeText.visibility = View.VISIBLE
+                    deliveryText.visibility = View.VISIBLE
+                    totalTaxText.visibility = View.VISIBLE
 
-                Toast.makeText(this, "Cart NOT Loaded", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Cart Loaded", Toast.LENGTH_SHORT).show()
-                //binding.emptyCartText.visibility = View.GONE
-                binding.listView.visibility = View.VISIBLE
-                binding.totalFeeText.visibility = View.VISIBLE
+                    listView.layoutManager = LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
+                    listView.adapter = CartAdapter(productCartList)
 
-                setupCartList(productCartList)
-                calculateCart(productCartList)
-            }
-        })
-    }
-    private fun setupCartList(productCartList: MutableList<Pair<ProductModel, CartItem>>) {
-        binding.listView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.listView.adapter = CartAdapter(productCartList)
+                    calculateCart(productCartList)
+                }
+                progressBar.visibility = View.GONE
+            })
+        }
     }
 
     private fun calculateCart(productCartList: MutableList<Pair<ProductModel, CartItem>>) {

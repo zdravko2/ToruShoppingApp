@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ToruShoppingApp</string>
     <string name="login">Login</string>
-    <string name="search_product">Search product...</string>
+    <string name="search_product">Search product…</string>
     <string name="to_do">To Do</string>
     <string name="category">Category</string>
     <string name="popular">Popular</string>
@@ -26,4 +26,10 @@
     <string name="total_price">Total price</string>
     <string name="status">Status</string>
     <string name="order_details">Order Details</string>
+    <string name="no_products_found">No products found</string>
+    <string name="empty_cart">Your cart is empty</string>
+    <string name="title">Title</string>
+    <string name="placeholder_price">$-</string>
+    <string name="title_order">Order</string>
+    <string name="title_list">List</string>
 </resources>

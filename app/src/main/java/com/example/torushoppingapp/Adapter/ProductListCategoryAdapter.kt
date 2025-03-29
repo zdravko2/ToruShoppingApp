@@ -15,13 +15,13 @@ class ProductListCategoryAdapter(val products:MutableList<ProductModel>)
         lateinit var context: Context
     class ViewHolder(val binding: ViewholderProductListingBinding):RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListCategoryAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val binding = ViewholderProductListingBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProductListCategoryAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
         fun bindCommonData(
             titleText:String,
@@ -42,7 +42,7 @@ class ProductListCategoryAdapter(val products:MutableList<ProductModel>)
             }
         }
 
-        bindCommonData(product.title, "${product.price}", product.picURL)
+        bindCommonData(product.title, "$${product.price}", product.picURL)
     }
 
     override fun getItemCount(): Int = products.size

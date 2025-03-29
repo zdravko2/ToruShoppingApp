@@ -4,30 +4,29 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.torushoppingapp.Activity.ProductDetailActivity
-import com.example.torushoppingapp.Domain.CartItem
+import com.example.torushoppingapp.Domain.OrderItem
 import com.example.torushoppingapp.Domain.ProductModel
-import com.example.torushoppingapp.databinding.ViewholderCartProductBinding
+import com.example.torushoppingapp.databinding.ViewholderOrderProductBinding
 
-class CartAdapter(private val productCartList: MutableList<Pair<ProductModel, CartItem>>)
-    : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class OrderProductAdapter(private val productOrderList: MutableList<Pair<ProductModel, OrderItem>>) :
+    RecyclerView.Adapter<OrderProductAdapter.ViewHolder>() {
 
     lateinit var context: Context
 
-    class ViewHolder(val binding: ViewholderCartProductBinding) :
+    class ViewHolder(val binding: ViewholderOrderProductBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        val binding = ViewholderCartProductBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ViewholderOrderProductBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (product, cartItem) = productCartList[position]
+        val (product, orderItem) = productOrderList[position]
 
         fun bindCommonData(
             titleText:String,
@@ -48,14 +47,10 @@ class CartAdapter(private val productCartList: MutableList<Pair<ProductModel, Ca
                 intent.putExtra("object", product)
                 context.startActivity(intent)
             }
-
-            holder.binding.removeButton.setOnClickListener {
-                Toast.makeText(context, "Product removed from cart", Toast.LENGTH_SHORT).show()
-            }
         }
 
-        bindCommonData(product.title, "$${product.price}", "Quantity: ${cartItem.quantity}", product.picURL)
+        bindCommonData(product.title, "$${product.price}", "Quantity: ${orderItem.quantity}", product.picURL)
     }
 
-    override fun getItemCount(): Int = productCartList.size
+    override fun getItemCount(): Int = productOrderList.size
 }

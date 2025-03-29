@@ -2,13 +2,11 @@ package com.example.torushoppingapp.Activity
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.torushoppingapp.Adapter.OrderListAdapter
-import com.example.torushoppingapp.Adapter.ProductListCategoryAdapter
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityOrderBinding
 
@@ -39,22 +37,27 @@ class OrderListActivity : AppCompatActivity() {
     }
 
     private fun getBundle() {
-        user_id = "user_1";
+        user_id = "user_1"
+        title = "order"
         // TODO: get orders by logged-in user
     }
 
     private fun initList() {
         binding.apply {
             progressBar.visibility = View.VISIBLE
-            viewModel.loadOrder(user_id).observe(this@OrderListActivity, Observer {
-                listView.layoutManager = LinearLayoutManager(this@OrderListActivity,
-                    LinearLayoutManager.VERTICAL, false)
-                listView.adapter = OrderListAdapter(it)
+            emptyOrderListText.visibility = View.GONE
+            viewModel.loadOrder(user_id).observe(this@OrderListActivity, Observer { orders ->
+                if (orders.isEmpty()) {
+                    emptyOrderListText.visibility = View.VISIBLE
+                    listView.visibility = View.GONE
+                } else {
+                    listView.visibility = View.VISIBLE
+                    listView.layoutManager = LinearLayoutManager(this@OrderListActivity,
+                        LinearLayoutManager.VERTICAL, false)
+                    listView.adapter = OrderListAdapter(orders)
+                }
                 progressBar.visibility = View.GONE
             })
-            backButton.setOnClickListener{
-                finish()
-            }
         }
     }
 }

@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.torushoppingapp.Adapter.ProductListCategoryAdapter
-import com.example.torushoppingapp.R
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityProductListBinding
 
@@ -26,8 +23,15 @@ class ProductListActivity : AppCompatActivity() {
         binding = ActivityProductListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initButtons()
         getBundle()
         initList()
+    }
+
+    private fun initButtons() {
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun getBundle() {
@@ -40,15 +44,19 @@ class ProductListActivity : AppCompatActivity() {
     private fun initList() {
         binding.apply {
             progressBar.visibility = View.VISIBLE
-            viewModel.loadProductCategory(id).observe(this@ProductListActivity, Observer {
-                listView.layoutManager = LinearLayoutManager(this@ProductListActivity,
-                    LinearLayoutManager.VERTICAL, false)
-                listView.adapter = ProductListCategoryAdapter(it)
+            emptyListText.visibility = View.GONE
+            viewModel.loadProductCategory(id).observe(this@ProductListActivity, Observer { productList ->
+                if (productList.isNullOrEmpty()) {
+                    emptyListText.visibility = View.VISIBLE
+                    listView.visibility = View.GONE
+                } else {
+                    listView.visibility = View.VISIBLE
+                    listView.layoutManager = LinearLayoutManager(this@ProductListActivity,
+                        LinearLayoutManager.VERTICAL, false)
+                    listView.adapter = ProductListCategoryAdapter(productList)
+                }
                 progressBar.visibility = View.GONE
             })
-            backButton.setOnClickListener{
-                finish()
-            }
         }
     }
 }

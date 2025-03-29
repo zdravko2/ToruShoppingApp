@@ -1,6 +1,7 @@
 package com.example.torushoppingapp.Activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -17,7 +18,21 @@ class ProductDetailActivity : AppCompatActivity() {
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initButtons()
         bundle()
+    }
+
+    private fun initButtons()
+    {
+        binding.apply {
+            backButton.setOnClickListener {
+                finish()
+            }
+
+            addToCartButton.setOnClickListener {
+                Toast.makeText(this@ProductDetailActivity, "Added to cart", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun bundle() {
@@ -31,14 +46,6 @@ class ProductDetailActivity : AppCompatActivity() {
             titleText.text = product.title
             descriptionText.text = product.description
             priceText.text = "$" + product.price.toString()
-
-            addToCartButton.setOnClickListener {
-                //TODO: Add to cart
-            }
-
-            backButton.setOnClickListener {
-                finish()
-            }
         }
     }
 }

@@ -6,6 +6,7 @@ import com.example.torushoppingapp.Domain.BannerModel
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
+import com.example.torushoppingapp.Domain.OrderItem
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.Domain.ReviewModel
@@ -47,11 +48,15 @@ class MainViewModel: ViewModel() {
         return repository.loadCart(userId)
     }
 
-    fun loadProductsWithCartQuantity(userId:String) : LiveData<MutableList<Pair<ProductModel, CartItem>>> {
-        return repository.loadProductsWithCartQuantity(userId)
+    fun loadProductsFromCart(userId:String) : LiveData<MutableList<Pair<ProductModel, CartItem>>> {
+        return repository.loadProductsFromCart(userId)
     }
 
     fun loadOrder(userId:String) : LiveData<MutableList<OrderModel>> {
         return repository.loadOrder(userId)
+    }
+
+    fun loadProductsFromOrder(orderId:String) : LiveData<MutableList<Pair<ProductModel, OrderItem>>> {
+        return repository.loadProductsFromOrder(orderId)
     }
 }

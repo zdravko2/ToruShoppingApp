@@ -12,7 +12,6 @@ import com.example.torushoppingapp.Activity.ProductListActivity
 import com.example.torushoppingapp.Domain.CategoryModel
 import com.example.torushoppingapp.R
 import com.example.torushoppingapp.databinding.ViewholderCategoryBinding
-import kotlinx.coroutines.delay
 
 class CategoryAdapter(val categories:MutableList<CategoryModel>) :
     RecyclerView.Adapter<CategoryAdapter.Viewholder>() {
@@ -24,38 +23,47 @@ class CategoryAdapter(val categories:MutableList<CategoryModel>) :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.Viewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         context = parent.context
         val binding = ViewholderCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return  Viewholder((binding))
     }
 
-    override fun onBindViewHolder(holder: CategoryAdapter.Viewholder, position: Int) {
+    override fun onBindViewHolder(holder: Viewholder, position: Int) {
         val category = categories[position]
-        holder.binding.titleCat.text = category.name
 
-        holder.binding.root.setOnClickListener {
-            lastSelectedPosition = selectedPosition
-            selectedPosition = position
-            notifyItemChanged(lastSelectedPosition)
-            notifyItemChanged(selectedPosition)
+        fun bindCommonData(
+            categoryId: String,
+            titleText: String
+        )
+        {
+            holder.binding.titleCat.text = titleText
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(context, ProductListActivity::class.java).apply {
-                    putExtra("id", category.id.toString())
-                    putExtra("title", category.name)
-                }
-                ContextCompat.startActivity(context, intent, null)
-            }, 100)
+            holder.binding.root.setOnClickListener {
+                lastSelectedPosition = selectedPosition
+                selectedPosition = position
+                notifyItemChanged(lastSelectedPosition)
+                notifyItemChanged(selectedPosition)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val intent = Intent(context, ProductListActivity::class.java).apply {
+                        putExtra("id", categoryId)
+                        putExtra("title", titleText)
+                    }
+                    ContextCompat.startActivity(context, intent, null)
+                }, 100)
+            }
+
+            if (selectedPosition == position) {
+                holder.binding.titleCat.setBackgroundResource(R.drawable.dark_blue_bg)
+                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.white))
+            } else {
+                holder.binding.titleCat.setBackgroundResource(R.drawable.white_bg)
+                holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.dark_blue))
+            }
         }
 
-        if (selectedPosition == position) {
-            holder.binding.titleCat.setBackgroundResource(R.drawable.dark_blue_bg)
-            holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.white))
-        } else {
-            holder.binding.titleCat.setBackgroundResource(R.drawable.white_bg)
-            holder.binding.titleCat.setTextColor(context.resources.getColor(R.color.dark_blue))
-        }
+        bindCommonData(category.id, category.name)
     }
 
     override fun getItemCount(): Int = categories.size
