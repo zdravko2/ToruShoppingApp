@@ -1,12 +1,22 @@
 package com.example.torushoppingapp.Domain
 
+import com.google.firebase.database.PropertyName
 import java.io.Serializable
 
 data class OrderModel(
-    val id:String = "",
-    val productId:String = "",
-    val userId:String = "",
-    val quantity:Int = 0,
-    val totalPrice:Double = 0.0,
-    val status:String = ""
+    var id: String = "",
+    var userId: String = "",
+    var orderItems: List<OrderItem> = listOf(),
+    var status: String = "",
+    @get:PropertyName("total_price")
+    @set:PropertyName("total_price")
+    var totalPrice: Double = 0.0
+) : Serializable
+
+data class OrderItem(
+    @get:PropertyName("product_id")
+    @set:PropertyName("product_id")
+    var productId: String = "",
+    var quantity: Int = 0,
+    var price: Double = 0.0
 ) : Serializable

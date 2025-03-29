@@ -14,7 +14,7 @@ import com.example.torushoppingapp.R
 import com.example.torushoppingapp.databinding.ViewholderCategoryBinding
 import kotlinx.coroutines.delay
 
-class CategoryAdapter(val items:MutableList<CategoryModel>) :
+class CategoryAdapter(val categories:MutableList<CategoryModel>) :
     RecyclerView.Adapter<CategoryAdapter.Viewholder>() {
         private lateinit var context: Context
         private var selectedPosition = -1
@@ -31,8 +31,8 @@ class CategoryAdapter(val items:MutableList<CategoryModel>) :
     }
 
     override fun onBindViewHolder(holder: CategoryAdapter.Viewholder, position: Int) {
-        val item = items[position]
-        holder.binding.titleCat.text = item.name
+        val category = categories[position]
+        holder.binding.titleCat.text = category.name
 
         holder.binding.root.setOnClickListener {
             lastSelectedPosition = selectedPosition
@@ -42,8 +42,8 @@ class CategoryAdapter(val items:MutableList<CategoryModel>) :
 
             Handler(Looper.getMainLooper()).postDelayed({
                 val intent = Intent(context, ProductListActivity::class.java).apply {
-                    putExtra("id", item.id.toString())
-                    putExtra("title", item.name)
+                    putExtra("id", category.id.toString())
+                    putExtra("title", category.name)
                 }
                 ContextCompat.startActivity(context, intent, null)
             }, 100)
@@ -58,5 +58,5 @@ class CategoryAdapter(val items:MutableList<CategoryModel>) :
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = categories.size
 }

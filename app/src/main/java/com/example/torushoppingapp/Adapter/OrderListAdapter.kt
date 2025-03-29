@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.torushoppingapp.Activity.OrderDetailActivity
 import com.example.torushoppingapp.Domain.OrderModel
@@ -38,6 +39,7 @@ class OrderListAdapter (val orders:MutableList<OrderModel>)
             }
         }
 
+        Toast.makeText(context, order.totalPrice.toString() , Toast.LENGTH_SHORT).show()
         bindCommonData(order.id, "${order.totalPrice}", order.status)
     }
 

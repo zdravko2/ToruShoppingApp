@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.disklrucache.DiskLruCache.Value
 import com.example.torushoppingapp.Domain.BannerModel
+import com.example.torushoppingapp.Domain.CartItem
+import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
@@ -149,6 +151,30 @@ class MainRepository {
         return listData
     }
 
+    fun loadProduct(productId:String) : LiveData<MutableList<ProductModel>>
+    {
+        val listData = MutableLiveData<MutableList<ProductModel>>()
+        val ref = firebaseDatabase.getReference("products")
+
+        val query:Query = ref.orderByChild("user_id").equalTo(productId)
+        query.addListenerForSingleValueEvent(object:ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<ProductModel>()
+                for (childSnapshot in snapshot.children) {
+                    val user = childSnapshot.getValue(ProductModel::class.java)
+                    user?.let { list.add(it) }
+                }
+                listData.value = list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+        return listData
+    }
+
     fun loadReview(productId:String): LiveData<MutableList<ReviewModel>> {
         val listData = MutableLiveData<MutableList<ReviewModel>>()
         val ref = firebaseDatabase.getReference("reviews")
@@ -171,6 +197,92 @@ class MainRepository {
         })
         return listData
     }
+
+    fun loadCart(userId: String): LiveData<MutableList<CartModel>> {
+        val cartData = MutableLiveData<MutableList<CartModel>>()
+        val ref = firebaseDatabase.getReference("users").child(userId).child("cart")
+
+        val query: Query = ref.orderByChild("user_id").equalTo(userId)
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val cartList = mutableListOf<CartModel>()
+
+                for (cartSnapshot in snapshot.children) {
+                    val cart = cartSnapshot.getValue(CartModel::class.java)
+                    if (cart != null) {
+                        cartList.add(cart)
+                    }
+                }
+                cartData.value = cartList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                cartData.value = mutableListOf()
+            }
+        })
+
+        return cartData
+    }
+
+    fun loadProductsWithCartQuantity(userId: String): LiveData<MutableList<Pair<ProductModel, CartItem>>> {
+        val liveData = MutableLiveData<MutableList<Pair<ProductModel, CartItem>>>()
+        val cartRef = firebaseDatabase.getReference("cart")
+        val productsRef = firebaseDatabase.getReference("products")
+
+        // Query the "cart" node for entries where "user_id" equals the given userId
+        val query = cartRef.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Assuming one cart per user
+                var cartItems: List<CartItem> = listOf()
+                for (cartSnapshot in snapshot.children) {
+                    val cartModel = cartSnapshot.getValue(CartModel::class.java)
+                    if (cartModel != null) {
+                        cartItems = cartModel.items
+                        break  // We take the first matching cart
+                    }
+                }
+                if (cartItems.isEmpty()) {
+                    liveData.value = mutableListOf()
+                    return
+                }
+
+                val productList = mutableListOf<Pair<ProductModel, CartItem>>()
+                var remainingItems = cartItems.size
+
+                // For each cart item, fetch the product details
+                for (cartItem in cartItems) {
+                    productsRef.child(cartItem.productId)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(productSnapshot: DataSnapshot) {
+                                val product = productSnapshot.getValue(ProductModel::class.java)
+                                product?.let {
+                                    productList.add(Pair(it, cartItem))
+                                }
+                                remainingItems--
+                                if (remainingItems == 0) {
+                                    liveData.value = productList
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                remainingItems--
+                                if (remainingItems == 0) {
+                                    liveData.value = productList
+                                }
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                liveData.value = mutableListOf()
+            }
+        })
+
+        return liveData
+    }
+
+
 
     fun loadOrder(userId: String): LiveData<MutableList<OrderModel>> {
         val listData = MutableLiveData<MutableList<OrderModel>>()

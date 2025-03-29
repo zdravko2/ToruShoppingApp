@@ -3,6 +3,8 @@ package com.example.torushoppingapp.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.torushoppingapp.Domain.BannerModel
+import com.example.torushoppingapp.Domain.CartItem
+import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
@@ -29,12 +31,24 @@ class MainViewModel: ViewModel() {
         return repository.loadProductCategory(categoryId)
     }
 
+    fun loadProduct(productId:String): LiveData<MutableList<ProductModel>> {
+        return repository.loadProduct(productId)
+    }
+
     fun loadUser(userId:String): LiveData<MutableList<UserModel>> {
         return repository.loadUser(userId)
     }
 
     fun loadReview(productId:String) : LiveData<MutableList<ReviewModel>> {
         return repository.loadReview(productId)
+    }
+
+    fun loadCart(userId:String) : LiveData<MutableList<CartModel>> {
+        return repository.loadCart(userId)
+    }
+
+    fun loadProductsWithCartQuantity(userId:String) : LiveData<MutableList<Pair<ProductModel, CartItem>>> {
+        return repository.loadProductsWithCartQuantity(userId)
     }
 
     fun loadOrder(userId:String) : LiveData<MutableList<OrderModel>> {

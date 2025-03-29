@@ -1,3 +1,3 @@
 package com.example.torushoppingapp.Domain
 
-data class CategoryModel(val name:String = "", val id:String = "")
+data class CategoryModel(var name:String = "", var id:String = "")

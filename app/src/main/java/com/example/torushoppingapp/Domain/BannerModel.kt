@@ -1,4 +1,4 @@
 package com.example.torushoppingapp.Domain
 
-data class BannerModel(val url:String="")
+data class BannerModel(var url:String="")
 
