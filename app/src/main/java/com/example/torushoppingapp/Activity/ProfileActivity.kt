@@ -1,12 +1,10 @@
 package com.example.torushoppingapp.Activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.databinding.ActivityProfileBinding
-import com.google.firebase.database.FirebaseDatabase
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -31,7 +29,7 @@ class ProfileActivity : AppCompatActivity() {
             logOutButton.setOnClickListener{
                 SessionManager.logout(this@ProfileActivity)
 
-                val intent = Intent(this@ProfileActivity, SplashActivity::class.java)
+                val intent = Intent(this@ProfileActivity, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()

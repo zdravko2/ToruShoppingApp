@@ -150,6 +150,41 @@ class MainRepository {
         return listData
     }
 
+    fun registerUser(user: UserModel): LiveData<UserModel?> {
+        val result = MutableLiveData<UserModel?>()
+        val ref = firebaseDatabase.getReference("users")
+
+        // Check if the email already exists
+        val query = ref.orderByChild("email").equalTo(user.email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // Email already in use
+                    result.value = null
+                } else {
+                    // Create a new user node
+                    val newUserRef = ref.push()
+                    val newUserId = newUserRef.key ?: return
+                    val userToSave = user.copy(id = newUserId)
+
+                    newUserRef.setValue(userToSave).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            result.value = userToSave
+                        } else {
+                            result.value = null
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                result.value = null
+            }
+        })
+
+        return result
+    }
+
     fun loadProduct(productId: String): LiveData<MutableList<ProductModel>> {
         val listData = MutableLiveData<MutableList<ProductModel>>()
         val ref = firebaseDatabase.getReference("products")

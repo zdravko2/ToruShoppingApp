@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.Repository.MainRepository
-import com.example.torushoppingapp.databinding.ActivitySplashBinding
+import com.example.torushoppingapp.databinding.ActivityLoginBinding
 
-class SplashActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivitySplashBinding
+    lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
             return
         }
 
-        binding = ActivitySplashBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initButtons()
@@ -45,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -55,22 +56,15 @@ class SplashActivity : AppCompatActivity() {
             if (user != null) {
                 Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()
 
-                // Save login status
-                val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-                with(sharedPref.edit()) {
-                    putBoolean("isLoggedIn", true)
-                    putString("userId", user.id)
-                    putString("userName", user.name)
-                    putString("userEmail", user.email)
-                    apply()
-                }
+                SessionManager.saveLoginSession(this, user)
 
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 }

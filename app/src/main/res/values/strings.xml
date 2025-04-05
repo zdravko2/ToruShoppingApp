@@ -36,4 +36,6 @@
     <string name="hint_password">Password</string>
     <string name="hint_email">Email</string>
     <string name="logout">Log Out</string>
+    <string name="hint_username">Username</string>
+    <string name="cancel">Cancel</string>
 </resources>
