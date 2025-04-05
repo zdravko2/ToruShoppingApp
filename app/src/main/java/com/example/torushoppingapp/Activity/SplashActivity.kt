@@ -1,5 +1,6 @@
 package com.example.torushoppingapp.Activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +14,16 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
+
+        if (isLoggedIn) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
+
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,12 +49,22 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun tryLogin(email:String, password:String)
-    {
+    private fun tryLogin(email: String, password: String) {
         val userLiveData = MainRepository().validateUser(email, password)
         userLiveData.observe(this) { user ->
             if (user != null) {
                 Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()
+
+                // Save login status
+                val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLoggedIn", true)
+                    putString("userId", user.id)
+                    putString("userName", user.name)
+                    putString("userEmail", user.email)
+                    apply()
+                }
+
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
@@ -51,4 +72,5 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
 }

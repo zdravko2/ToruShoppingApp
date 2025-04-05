@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.torushoppingapp.Adapter.OrderListAdapter
+import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityOrderBinding
 
 class OrderListActivity : AppCompatActivity() {
     lateinit var binding: ActivityOrderBinding
     private var viewModel = MainViewModel()
-    private var user_id:String = ""
-    private var title:String = ""
+    private var userId:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,16 +35,14 @@ class OrderListActivity : AppCompatActivity() {
     }
 
     private fun getBundle() {
-        user_id = "user_1"
-        title = "order"
-        // TODO: get orders by logged-in user
+        userId = SessionManager.getUserId(this).toString()
     }
 
     private fun initList() {
         binding.apply {
             progressBar.visibility = View.VISIBLE
             emptyOrderListText.visibility = View.GONE
-            viewModel.loadOrder(user_id).observe(this@OrderListActivity, Observer { orders ->
+            viewModel.loadOrder(userId).observe(this@OrderListActivity, Observer { orders ->
                 if (orders.isEmpty()) {
                     emptyOrderListText.visibility = View.VISIBLE
                     listView.visibility = View.GONE

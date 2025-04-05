@@ -58,6 +58,40 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/logOutButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/dark_blue_bg"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:contentDescription="@string/to_do"
+                        app:srcCompat="@drawable/back"
+                        app:tint="@color/light" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/logout"
+                        android:textColor="@color/light"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/categoryText"
                     android:layout_width="wrap_content"

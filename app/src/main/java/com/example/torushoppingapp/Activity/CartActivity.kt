@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.torushoppingapp.Adapter.CartAdapter
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.ProductModel
+import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityCartBinding
 
 class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private val viewModel = MainViewModel()
+    private var userId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +32,12 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun getBundle() {
+        userId = SessionManager.getUserId(this).toString()
+    }
+
     private fun observeCart() {
-        val userId = "user_1" // Replace with your dynamic user ID
         binding.apply {
             progressBar.visibility = View.VISIBLE
             emptyCartText.visibility = View.GONE

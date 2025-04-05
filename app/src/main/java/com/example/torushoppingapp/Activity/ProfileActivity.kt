@@ -1,7 +1,10 @@
 package com.example.torushoppingapp.Activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.databinding.ActivityProfileBinding
 import com.google.firebase.database.FirebaseDatabase
 
@@ -20,33 +23,26 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun initButtons()
     {
-        binding.backButton.setOnClickListener{
-            finish()
+        binding.apply{
+            backButton.setOnClickListener{
+                finish()
+            }
+
+            logOutButton.setOnClickListener{
+                SessionManager.logout(this@ProfileActivity)
+
+                val intent = Intent(this@ProfileActivity, SplashActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
         }
+
     }
 
     private fun initProfile()
     {
-        val databaseReference = FirebaseDatabase.getInstance().getReference("users")
-
-        databaseReference.orderByKey().limitToFirst(1).get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                for (userSnapshot in snapshot.children) {
-                    val username = userSnapshot.child("name").getValue(String::class.java)
-                    val email = userSnapshot.child("email").getValue(String::class.java)
-                    if (username != null) {
-                        binding.usernameText.text = username
-                        binding.emailText.text = email
-                    } else {
-                        binding.usernameText.text = "No username found"
-                    }
-                }
-            } else {
-                binding.usernameText.text = "No users found"
-            }
-        }.addOnFailureListener {
-            binding.usernameText.text = "Error retrieving user"
-        }
+        binding.usernameText.text = SessionManager.getUserId(this)
+        binding.emailText.text = SessionManager.getUserEmail(this)
     }
-
 }
