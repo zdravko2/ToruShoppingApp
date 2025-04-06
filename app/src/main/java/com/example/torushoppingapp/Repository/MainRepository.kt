@@ -13,8 +13,11 @@ import com.example.torushoppingapp.Domain.ReviewModel
 import com.example.torushoppingapp.Domain.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
 import com.google.firebase.database.Query
+import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 
 class MainRepository {
@@ -178,7 +181,7 @@ class MainRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                result.value = null
+                TODO("Not yet implemented")
             }
         })
 
@@ -316,7 +319,124 @@ class MainRepository {
         return liveData
     }
 
-    fun loadOrder(userId: String): LiveData<MutableList<OrderModel>> {
+    fun addProductToCart(userId: String, productId: String, quantity: Int?): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val cartRootRef = firebaseDatabase.getReference("cart")
+
+        // Step 1: Search for existing cart by user_id
+        val query = cartRootRef.orderByChild("user_id").equalTo(userId)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var cartKey: String? = null
+                var cart: CartModel? = null
+
+                for (child in snapshot.children) {
+                    val model = child.getValue(CartModel::class.java)
+                    val dbUserId = child.child("user_id").getValue(String::class.java)
+                    if (model != null && dbUserId == userId) {
+                        cartKey = child.key
+                        cart = model
+                        break
+                    }
+                }
+
+                // Step 2: If cart exists, update it
+                val items = cart?.items?.toMutableList() ?: mutableListOf()
+                val existingItem = items.find { it.productId == productId }
+
+                if (existingItem != null) {
+                    existingItem.quantity += quantity ?: 1
+                } else {
+                    items.add(CartItem(productId = productId, quantity = quantity ?: 1))
+                }
+
+                val updatedCart: CartModel
+                val finalCartRef: DatabaseReference
+
+                if (cartKey != null && cart != null) {
+                    // Use existing cart
+                    updatedCart = CartModel(
+                        id = cart.id,
+                        userId = cart.userId,
+                        items = items
+                    )
+                    finalCartRef = cartRootRef.child(cartKey)
+                } else {
+                    // Create new cart with unique ID
+                    val newCartRef = cartRootRef.push()
+                    val newCartId = newCartRef.key ?: return
+                    updatedCart = CartModel(
+                        id = newCartId,
+                        userId = userId,
+                        items = items
+                    )
+                    finalCartRef = newCartRef
+                }
+
+                // Step 3: Save cart
+                finalCartRef.setValue(updatedCart).addOnCompleteListener { task ->
+                    result.value = task.isSuccessful
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                result.value = false
+            }
+        })
+
+        return result
+    }
+
+
+    fun removeProductFromCart(userId: String, productId: String, quantity: Int?): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val cartRef = firebaseDatabase.getReference("cart")
+
+        val query = cartRef.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var cartKey: String? = null
+                var cart: CartModel? = null
+
+                for (child in snapshot.children) {
+                    val model = child.getValue(CartModel::class.java)
+                    val dbUserId = child.child("user_id").getValue(String::class.java)
+
+                    if (model != null && dbUserId == userId) {
+                        cartKey = child.key
+                        cart = model
+                        break
+                    }
+                }
+
+                if (cartKey != null && cart != null) {
+                    val updatedItems = cart.items.filter { it.productId != productId }
+
+                    val updatedCart = CartModel(
+                        id = cart.id,
+                        userId = cart.userId,
+                        items = updatedItems
+                    )
+
+                    cartRef.child(cartKey).setValue(updatedCart).addOnCompleteListener { task ->
+                        result.value = task.isSuccessful
+                    }
+                } else {
+                    result.value = false
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                result.value = false
+            }
+        })
+
+        return result
+    }
+
+
+    fun loadOrders(userId: String): LiveData<MutableList<OrderModel>> {
         val listData = MutableLiveData<MutableList<OrderModel>>()
         val ref = firebaseDatabase.getReference("orders")
 
@@ -393,5 +513,119 @@ class MainRepository {
         return liveData
     }
 
+    fun placeOrder(userId: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val db = firebaseDatabase
+
+        val cartRef = db.getReference("cart")
+        val productRef = db.getReference("products")
+        val orderRef = db.getReference("orders")
+
+        // 1. Find user's cart
+        val query = cartRef.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(cartSnapshot: DataSnapshot) {
+                var cartKey: String? = null
+                var cart: CartModel? = null
+
+                for (child in cartSnapshot.children) {
+                    val model = child.getValue(CartModel::class.java)
+                    val dbUserId = child.child("user_id").getValue(String::class.java)
+                    if (model != null && dbUserId == userId) {
+                        cartKey = child.key
+                        cart = model
+                        break
+                    }
+                }
+
+                if (cart == null || cart.items.isEmpty()) {
+                    result.value = false
+                    return
+                }
+
+                val cartItems = cart.items
+                val orderItems = mutableListOf<OrderItem>()
+                var totalPrice = 0.0
+                var failed = false
+                var remaining = cartItems.size
+
+                for (item in cartItems) {
+                    productRef.child(item.productId).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(productSnapshot: DataSnapshot) {
+                            val product = productSnapshot.getValue(ProductModel::class.java)
+
+                            if (product == null || product.stock < item.quantity) {
+                                failed = true
+                            } else {
+                                totalPrice += product.price * item.quantity
+                                orderItems.add(
+                                    OrderItem(
+                                        productId = item.productId,
+                                        quantity = item.quantity,
+                                        price = product.price
+                                    )
+                                )
+                            }
+
+                            remaining--
+                            if (remaining == 0) {
+                                if (failed) {
+                                    result.value = false
+                                } else {
+                                    val newOrderRef = orderRef.push()
+                                    val orderId = newOrderRef.key ?: return
+                                    val newOrder = OrderModel(
+                                        id = orderId,
+                                        userId = userId,
+                                        orderItems = orderItems,
+                                        totalPrice = totalPrice,
+                                        status = "Processing"
+                                    )
+
+                                    newOrderRef.setValue(newOrder).addOnCompleteListener { orderTask ->
+                                        if (orderTask.isSuccessful && cartKey != null) {
+                                            // Update stock
+                                            for (ci in cartItems) {
+                                                val stockRef = productRef.child(ci.productId).child("stock")
+                                                stockRef.runTransaction(object : Transaction.Handler {
+                                                    override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                                        val currentStock = currentData.getValue(Int::class.java) ?: 0
+                                                        currentData.value = currentStock - ci.quantity
+                                                        return Transaction.success(currentData)
+                                                    }
+
+                                                    override fun onComplete(error: DatabaseError?, committed: Boolean, snapshot: DataSnapshot?) {
+                                                        // No-op
+                                                    }
+                                                })
+                                            }
+
+                                            // Clear cart
+                                            cartRef.child(cartKey).removeValue()
+                                            result.value = true
+                                        } else {
+                                            result.value = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            failed = true
+                            remaining--
+                            if (remaining == 0) result.value = false
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                result.value = false
+            }
+        })
+
+        return result
+    }
 
 }

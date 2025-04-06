@@ -46,14 +46,15 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun tryRegister(username: String, email: String, password: String)
     {
-        val user = UserModel(
+        val createdUser = UserModel(
             name = username,
             email = email,
             password = password
         )
 
-        MainRepository().registerUser(user).observe(this) { createdUser ->
-            if (createdUser != null) {
+        val userLiveData = MainRepository().registerUser(createdUser)
+        userLiveData.observe(this) { user ->
+            if (user != null) {
                 Toast.makeText(this, "Registered successfully!", Toast.LENGTH_SHORT).show()
 
                 SessionManager.saveLoginSession(this, user)

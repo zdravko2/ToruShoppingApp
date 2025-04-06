@@ -40,6 +40,10 @@ class MainViewModel: ViewModel() {
         return repository.loadUser(userId)
     }
 
+    fun registerUser(user: UserModel): LiveData<UserModel?> {
+        return repository.registerUser(user)
+    }
+
     fun loadReview(productId:String) : LiveData<MutableList<ReviewModel>> {
         return repository.loadReview(productId)
     }
@@ -52,11 +56,23 @@ class MainViewModel: ViewModel() {
         return repository.loadProductsFromCart(userId)
     }
 
-    fun loadOrder(userId:String) : LiveData<MutableList<OrderModel>> {
-        return repository.loadOrder(userId)
+    fun addProductToCart(userId: String, productId: String, quantity: Int?) : LiveData<Boolean>  {
+        return repository.addProductToCart(userId, productId, quantity)
+    }
+
+    fun removeProductFromCart(userId: String, productId: String, quantity: Int?) : LiveData<Boolean>  {
+        return repository.removeProductFromCart(userId, productId, quantity)
+    }
+
+    fun loadOrders(userId:String) : LiveData<MutableList<OrderModel>> {
+        return repository.loadOrders(userId)
     }
 
     fun loadProductsFromOrder(orderId:String) : LiveData<MutableList<Pair<ProductModel, OrderItem>>> {
         return repository.loadProductsFromOrder(orderId)
+    }
+
+    fun placeOrder(userId: String): LiveData<Boolean> {
+        return repository.placeOrder(userId)
     }
 }

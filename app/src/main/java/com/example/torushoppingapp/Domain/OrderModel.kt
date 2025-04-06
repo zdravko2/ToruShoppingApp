@@ -5,9 +5,17 @@ import java.io.Serializable
 
 data class OrderModel(
     var id: String = "",
+
+    @get:PropertyName("user_id")
+    @set:PropertyName("user_id")
     var userId: String = "",
+
+    @get:PropertyName("items")
+    @set:PropertyName("items")
     var orderItems: List<OrderItem> = listOf(),
+
     var status: String = "",
+
     @get:PropertyName("total_price")
     @set:PropertyName("total_price")
     var totalPrice: Double = 0.0

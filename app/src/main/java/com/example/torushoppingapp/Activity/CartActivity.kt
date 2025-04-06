@@ -1,7 +1,9 @@
 package com.example.torushoppingapp.Activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +25,30 @@ class CartActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initButtons()
+        getBundle()
         observeCart()
     }
 
     private fun initButtons() {
-        binding.backButton.setOnClickListener {
-            finish()
+        binding.apply {
+            backButton.setOnClickListener {
+                finish()
+            }
+
+            placeOrderButton.setOnClickListener {
+                val userId = SessionManager.getUserId(this@CartActivity).toString()
+
+                viewModel.placeOrder(userId).observe(this@CartActivity) { success ->
+                    if (success) {
+                        Toast.makeText(this@CartActivity, "Order placed successfully!", Toast.LENGTH_SHORT).show()
+
+                        startActivity(Intent(this@CartActivity, OrderListActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this@CartActivity, "Failed to place order. Check product availability.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 

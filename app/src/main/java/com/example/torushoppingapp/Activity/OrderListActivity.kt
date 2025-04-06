@@ -29,8 +29,10 @@ class OrderListActivity : AppCompatActivity() {
 
     fun initButtons()
     {
-        binding.backButton.setOnClickListener {
-            finish()
+        binding.apply {
+            backButton.setOnClickListener {
+                finish()
+            }
         }
     }
 
@@ -42,7 +44,7 @@ class OrderListActivity : AppCompatActivity() {
         binding.apply {
             progressBar.visibility = View.VISIBLE
             emptyOrderListText.visibility = View.GONE
-            viewModel.loadOrder(userId).observe(this@OrderListActivity, Observer { orders ->
+            viewModel.loadOrders(userId).observe(this@OrderListActivity, Observer { orders ->
                 if (orders.isEmpty()) {
                     emptyOrderListText.visibility = View.VISIBLE
                     listView.visibility = View.GONE
