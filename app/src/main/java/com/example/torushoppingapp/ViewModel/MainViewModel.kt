@@ -36,6 +36,10 @@ class MainViewModel: ViewModel() {
         return repository.loadProduct(productId)
     }
 
+    fun searchProducts(query:String): LiveData<MutableList<ProductModel>> {
+        return repository.searchProducts(query)
+    }
+
     fun loadUser(userId:String): LiveData<MutableList<UserModel>> {
         return repository.loadUser(userId)
     }

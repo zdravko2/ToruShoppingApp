@@ -10,8 +10,8 @@ import com.example.torushoppingapp.Activity.ProductDetailActivity
 import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.databinding.ViewholderProductListingBinding
 
-class ProductListCategoryAdapter(val products:MutableList<ProductModel>)
-    : RecyclerView.Adapter<ProductListCategoryAdapter.ViewHolder>() {
+class ProductListAdapter(val products:MutableList<ProductModel>)
+    : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
         lateinit var context: Context
     class ViewHolder(val binding: ViewholderProductListingBinding):RecyclerView.ViewHolder(binding.root)
 

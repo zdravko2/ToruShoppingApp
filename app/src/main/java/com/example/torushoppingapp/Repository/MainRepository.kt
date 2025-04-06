@@ -106,6 +106,33 @@ class MainRepository {
         return listData
     }
 
+    fun searchProducts(query: String): LiveData<MutableList<ProductModel>> {
+        val liveData = MutableLiveData<MutableList<ProductModel>>()
+        val ref = firebaseDatabase.getReference("products")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<ProductModel>()
+                for (childSnapshot in snapshot.children) {
+                    val product = childSnapshot.getValue(ProductModel::class.java)
+                    product?.let {
+                        if (it.title.contains(query, ignoreCase = true) ||
+                            it.description.contains(query, ignoreCase = true)) {
+                            list.add(it)
+                        }
+                    }
+                }
+                liveData.value = list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                liveData.value = mutableListOf()
+            }
+        })
+        return liveData
+    }
+
+
     fun validateUser(email: String, password: String): LiveData<UserModel?> {
         val userData = MutableLiveData<UserModel?>()
         val ref = firebaseDatabase.getReference("users")

@@ -2,7 +2,10 @@ package com.example.torushoppingapp.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +15,7 @@ import com.example.torushoppingapp.Adapter.CategoryAdapter
 import com.example.torushoppingapp.Adapter.PopularAdapter
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityMainBinding
+import com.google.android.material.search.SearchBar
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -23,14 +27,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initBottomMenu()
+        initButtons()
         initBanner()
         initCategory()
         initPopular()
     }
 
     var darkMode = false
-    private fun initBottomMenu()
+    private fun initButtons()
     {
         binding.apply {
             settingsButton.setOnClickListener {
@@ -43,6 +47,24 @@ class MainActivity : AppCompatActivity() {
                 {
                     darkMode = true
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            }
+
+
+            searchBar.setOnEditorActionListener { _, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+
+                    val query = searchBar.text.toString().trim()
+                    if (query.isNotEmpty()) {
+                        val intent = Intent(this@MainActivity, ProductSearchActivity::class.java)
+                        intent.putExtra("query", query)
+                        startActivity(intent)
+                    }
+                    true
+                } else {
+                    false
                 }
             }
 
