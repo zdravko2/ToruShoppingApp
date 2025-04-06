@@ -41,4 +41,5 @@
     <string name="post">Post</string>
     <string name="write_a_comment_or_review">Write a comment or review</string>
     <string name="no_reviews">No reviews for this product</string>
+    <string name="ordered_date">Date Ordered</string>
 </resources>

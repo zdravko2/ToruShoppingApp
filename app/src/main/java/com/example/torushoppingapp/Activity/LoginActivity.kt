@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.torushoppingapp.Helper.SessionManager
-import com.example.torushoppingapp.Repository.MainRepository
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityLoginBinding
 
@@ -20,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
-
         if (isLoggedIn) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -35,20 +33,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initButtons()
     {
-        binding.loginButton.setOnClickListener {
+        binding.apply {
+            loginButton.setOnClickListener {
             val email = binding.emailText.text.toString().trim()
             val password = binding.passwordText.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter email and password!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Please enter email and password!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             tryLogin(email, password)
         }
-
-        binding.registerButton.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            registerButton.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
         }
     }
 

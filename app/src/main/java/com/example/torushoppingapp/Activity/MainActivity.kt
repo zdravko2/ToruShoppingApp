@@ -1,31 +1,39 @@
 package com.example.torushoppingapp.Activity
 
+import android.Manifest
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.torushoppingapp.Adapter.CategoryAdapter
 import com.example.torushoppingapp.Adapter.PopularAdapter
+import com.example.torushoppingapp.Helper.CustomNotificationManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityMainBinding
-import com.google.android.material.search.SearchBar
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val viewModel = MainViewModel()
 
-
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestPermissions()
+        initNotificationChannels()
 
         initButtons()
         initBanner()
@@ -121,5 +129,27 @@ class MainActivity : AppCompatActivity() {
             binding.progressBarPopular.visibility = View.GONE
         }
         viewModel.loadPopular()
+    }
+
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private fun initNotificationChannels()
+    {
+        CustomNotificationManager(this).initCustomChannels()
+    }
+
+    private val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
+    private fun requestPermissions() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
+            }
+        }
     }
 }

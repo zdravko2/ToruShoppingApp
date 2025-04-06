@@ -1,15 +1,19 @@
 package com.example.torushoppingapp.Activity
 
+import android.Manifest
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.torushoppingapp.Adapter.CartAdapter
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.ProductModel
+import com.example.torushoppingapp.Helper.CustomNotificationManager
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityCartBinding
@@ -19,6 +23,7 @@ class CartActivity : AppCompatActivity() {
     private val viewModel = MainViewModel()
     private var userId: String = ""
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)
@@ -29,6 +34,7 @@ class CartActivity : AppCompatActivity() {
         observeCart()
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun initButtons() {
         binding.apply {
             backButton.setOnClickListener {
@@ -40,7 +46,7 @@ class CartActivity : AppCompatActivity() {
 
                 viewModel.placeOrder(userId).observe(this@CartActivity) { success ->
                     if (success) {
-                        Toast.makeText(this@CartActivity, "Order placed successfully!", Toast.LENGTH_SHORT).show()
+                        notifyUser()
 
                         startActivity(Intent(this@CartActivity, OrderListActivity::class.java))
                         finish()
@@ -88,7 +94,6 @@ class CartActivity : AppCompatActivity() {
         val percentTax = 0.02
         val deliveryFee = 10.0
 
-        // Sum up (price * quantity) for all products in the cart
         val productTotal = productCartList.sumOf { (product, cartItem) ->
             product.price * cartItem.quantity
         }
@@ -99,5 +104,17 @@ class CartActivity : AppCompatActivity() {
         binding.totalTaxText.text = String.format("$%.2f", tax)
         binding.deliveryText.text = String.format("$%.2f", deliveryFee)
         binding.priceText.text = String.format("$%.2f", total)
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private fun notifyUser(title: String = "Order Confirmed", message: String = "Thank you for your order!", delay: Long = 10000)
+    {
+        CustomNotificationManager(this).scheduleNotification(
+            channelId = "order_channel",
+            notificationId = 1,
+            title = title,
+            message = message,
+            delay = delay
+        )
     }
 }

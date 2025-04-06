@@ -57,6 +57,7 @@
         android:numStars="5"
         android:progressTint="@color/dark"
         android:rating="4"
+        android:isIndicator="true"
         app:layout_constraintBottom_toTopOf="@+id/price_text"
         app:layout_constraintStart_toStartOf="parent" />
 
