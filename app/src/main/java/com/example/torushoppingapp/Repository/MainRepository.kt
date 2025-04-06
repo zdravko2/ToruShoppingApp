@@ -211,7 +211,7 @@ class MainRepository {
         return listData
     }
 
-    fun loadReview(productId: String): LiveData<MutableList<ReviewModel>> {
+    fun loadReviews(productId: String): LiveData<MutableList<ReviewModel>> {
         val listData = MutableLiveData<MutableList<ReviewModel>>()
         val ref = firebaseDatabase.getReference("reviews")
 
@@ -234,30 +234,44 @@ class MainRepository {
         return listData
     }
 
-    fun loadCart(userId: String): LiveData<MutableList<CartModel>> {
-        val cartData = MutableLiveData<MutableList<CartModel>>()
-        val ref = firebaseDatabase.getReference("users").child(userId).child("cart")
+    fun postReview(productId: String, userId: String, rating: Double, comment: String): LiveData<MutableList<ReviewModel>> {
+        val result = MutableLiveData<MutableList<ReviewModel>>()
+        val ref = firebaseDatabase.getReference("reviews")
 
-        val query: Query = ref.orderByChild("user_id").equalTo(userId)
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val cartList = mutableListOf<CartModel>()
+        val newReviewRef = ref.push()
+        val newReviewId = newReviewRef.key ?: return result
 
-                for (cartSnapshot in snapshot.children) {
-                    val cart = cartSnapshot.getValue(CartModel::class.java)
-                    if (cart != null) {
-                        cartList.add(cart)
+        val newReview = ReviewModel(
+            id = newReviewId,
+            productId = productId,
+            userId = userId,
+            rating = rating,
+            comment = comment
+        )
+
+        newReviewRef.setValue(newReview).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val updatedList = mutableListOf<ReviewModel>()
+                val query = ref.orderByChild("product_id").equalTo(productId)
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (childSnapshot in snapshot.children) {
+                            val review = childSnapshot.getValue(ReviewModel::class.java)
+                            review?.let { updatedList.add(it) }
+                        }
+                        result.value = updatedList
                     }
-                }
-                cartData.value = cartList
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                cartData.value = mutableListOf()
+                    override fun onCancelled(error: DatabaseError) {
+                        result.value = mutableListOf()
+                    }
+                })
+            } else {
+                result.value = mutableListOf()
             }
-        })
+        }
 
-        return cartData
+        return result
     }
 
     fun loadProductsFromCart(userId: String): LiveData<MutableList<Pair<ProductModel, CartItem>>> {

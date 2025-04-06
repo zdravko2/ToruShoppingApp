@@ -36,33 +36,37 @@ class OrderDetailActivity : AppCompatActivity() {
     private fun loadOrderDetails() {
         order = intent.getSerializableExtra("object") as OrderModel
 
-        viewModel.loadProductsFromOrder(order.id).observe(this, Observer { productOrderList ->
-            if (productOrderList.isNullOrEmpty()) {
-                binding.emptyOrderListText.visibility = View.VISIBLE
-                binding.listView.visibility = View.GONE
-                binding.orderIdText.visibility = View.GONE
-                binding.totalPriceText.visibility = View.GONE
-                binding.statusText.visibility = View.GONE
+        binding.apply {
+            emptyOrderListText.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            viewModel.loadProductsFromOrder(order.id).observe(this@OrderDetailActivity, Observer { productOrderList ->
+                if (productOrderList.isNullOrEmpty()) {
+                    emptyOrderListText.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    listView.visibility = View.GONE
+                    orderIdText.visibility = View.GONE
+                    totalPriceText.visibility = View.GONE
+                    statusText.visibility = View.GONE
+                } else {
 
-                Toast.makeText(this, "No products found for this order", Toast.LENGTH_SHORT).show()
-            } else {
+                    emptyOrderListText.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    listView.visibility = View.VISIBLE
+                    orderIdText.visibility = View.VISIBLE
+                    totalPriceText.visibility = View.VISIBLE
+                    statusText.visibility = View.VISIBLE
 
-                binding.emptyOrderListText.visibility = View.GONE
-                binding.listView.visibility = View.VISIBLE
-                binding.orderIdText.visibility = View.VISIBLE
-                binding.totalPriceText.visibility = View.VISIBLE
-                binding.statusText.visibility = View.VISIBLE
-
-                setupCartList(productOrderList)
-            }
-        })
+                    setupCartList(productOrderList)
+                }
+            })
+        }
     }
 
     private fun setupCartList(productOrderList: MutableList<Pair<ProductModel, OrderItem>>) {
         binding.apply {
             orderText.text = order.id
             orderIdText.text = order.id
-            totalPriceText.text = "$" + order.totalPrice.toString()
+            totalPriceText.text = "$" + String.format("%.2f", order.totalPrice)
             statusText.text = order.status
 
             listView.layoutManager = LinearLayoutManager(this@OrderDetailActivity, LinearLayoutManager.VERTICAL, false)

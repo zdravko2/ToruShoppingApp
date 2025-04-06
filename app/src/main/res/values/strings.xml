@@ -38,4 +38,7 @@
     <string name="logout">Log Out</string>
     <string name="hint_username">Username</string>
     <string name="cancel">Cancel</string>
+    <string name="post">Post</string>
+    <string name="write_a_comment_or_review">Write a comment or review</string>
+    <string name="no_reviews">No reviews for this product</string>
 </resources>

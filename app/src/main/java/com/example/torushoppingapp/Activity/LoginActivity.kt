@@ -7,11 +7,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.Repository.MainRepository
+import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
+    private var viewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun tryLogin(email: String, password: String) {
-        val userLiveData = MainRepository().validateUser(email, password)
+        val userLiveData = viewModel.validateUser(email, password)
         userLiveData.observe(this) { user ->
             if (user != null) {
                 Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()

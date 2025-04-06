@@ -1,5 +1,6 @@
 package com.example.torushoppingapp.Activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +48,10 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
             reviewButton.setOnClickListener {
-
+                val intent = Intent(this@ProductDetailActivity, ReviewListActivity::class.java)
+                intent.putExtra("id", product.id)
+                intent.putExtra("title", product.title)
+                startActivity(intent)
             }
 
             favoriteButton.setOnClickListener {

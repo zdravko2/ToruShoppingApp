@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.torushoppingapp.Domain.UserModel
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.Repository.MainRepository
+import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
+    private var viewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,8 @@ class RegisterActivity : AppCompatActivity() {
             password = password
         )
 
-        val userLiveData = MainRepository().registerUser(createdUser)
+
+        val userLiveData = viewModel.registerUser(createdUser)
         userLiveData.observe(this) { user ->
             if (user != null) {
                 Toast.makeText(this, "Registered successfully!", Toast.LENGTH_SHORT).show()

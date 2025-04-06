@@ -22,8 +22,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="48dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -34,6 +34,7 @@
                     android:autofillHints=""
                     android:background="@drawable/white_bg"
                     android:drawableStart="@drawable/search_icon"
+                    android:drawableTint="@color/dark"
                     android:drawablePadding="12dp"
                     android:ems="10"
                     android:hint="@string/hint_search_product"
@@ -48,6 +49,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
                     android:background="@drawable/menu_dark_bg"
+                    app:tint="@color/menu_light"
                     android:contentDescription="@string/to_do"
                     android:padding="12dp"
                     app:srcCompat="@drawable/settings" />
@@ -219,7 +221,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
-                        android:tint="@color/menu_light"
+                        app:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_1" />
 
                     <TextView
@@ -245,7 +247,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
-                        android:tint="@color/menu_light"
+                        app:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_2" />
 
                     <TextView
@@ -271,7 +273,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
-                        android:tint="@color/menu_light"
+                        app:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_3" />
 
                     <TextView
@@ -296,7 +298,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
-                        android:tint="@color/menu_light"
+                        app:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_4" />
 
                     <TextView
@@ -321,7 +323,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:contentDescription="@string/to_do"
-                        android:tint="@color/menu_light"
+                        app:tint="@color/menu_light"
                         app:srcCompat="@drawable/btn_5" />
 
                     <TextView

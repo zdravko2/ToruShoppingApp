@@ -40,16 +40,20 @@ class MainViewModel: ViewModel() {
         return repository.loadUser(userId)
     }
 
+    fun validateUser(email: String, password: String): LiveData<UserModel?> {
+        return repository.validateUser(email, password)
+    }
+
     fun registerUser(user: UserModel): LiveData<UserModel?> {
         return repository.registerUser(user)
     }
 
-    fun loadReview(productId:String) : LiveData<MutableList<ReviewModel>> {
-        return repository.loadReview(productId)
+    fun loadReviews(productId:String) : LiveData<MutableList<ReviewModel>> {
+        return repository.loadReviews(productId)
     }
 
-    fun loadCart(userId:String) : LiveData<MutableList<CartModel>> {
-        return repository.loadCart(userId)
+    fun postReview(productId:String, userId: String, rating: Double, comment: String) : LiveData<MutableList<ReviewModel>> {
+        return repository.postReview(productId, userId, rating, comment)
     }
 
     fun loadProductsFromCart(userId:String) : LiveData<MutableList<Pair<ProductModel, CartItem>>> {

@@ -13,10 +13,10 @@
         android:theme="@style/Theme.ToruShoppingApp"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.RegisterActivity"
+            android:name=".Activity.ReviewListActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ReviewListActivity"
+            android:name=".Activity.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.OrderDetailActivity"
