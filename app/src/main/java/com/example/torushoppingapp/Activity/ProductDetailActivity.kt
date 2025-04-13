@@ -2,9 +2,15 @@ package com.example.torushoppingapp.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.torushoppingapp.Activity.FavoritesListActivity
+import com.example.torushoppingapp.Adapter.FavoriteListAdapter
 import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
@@ -55,7 +61,14 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
             favoriteButton.setOnClickListener {
-                Toast.makeText(this@ProductDetailActivity, "Added to favorites", Toast.LENGTH_SHORT).show()
+                var userId = SessionManager.getUserId(this@ProductDetailActivity).toString()
+                viewModel.toggleProductFavorite(userId, product.id).observe(this@ProductDetailActivity, Observer { success ->
+                    if (success) {
+                        Toast.makeText(this@ProductDetailActivity, "Added to favorites", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@ProductDetailActivity, "Failed to add to favorites", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
 
             minusButton.setOnClickListener {

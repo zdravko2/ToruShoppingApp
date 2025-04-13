@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/text"
-    tools:context=".Activity.OrderListActivity">
+    tools:context=".Activity.FavoritesListActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
@@ -57,7 +57,7 @@
             android:id="@+id/categoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/orders"
+            android:text="@string/favorites"
             android:textColor="@color/dark"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -75,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,10 +98,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/emptyOrderListText"
+        android:id="@+id/emptyListText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/no_products_found"
@@ -111,5 +111,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

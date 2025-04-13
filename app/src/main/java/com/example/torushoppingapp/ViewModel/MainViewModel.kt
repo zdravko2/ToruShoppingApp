@@ -6,6 +6,7 @@ import com.example.torushoppingapp.Domain.BannerModel
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
+import com.example.torushoppingapp.Domain.FavoriteItem
 import com.example.torushoppingapp.Domain.OrderItem
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
@@ -38,6 +39,14 @@ class MainViewModel: ViewModel() {
 
     fun searchProducts(query:String): LiveData<MutableList<ProductModel>> {
         return repository.searchProducts(query)
+    }
+
+    fun loadFavorites(userId:String): LiveData<MutableList<Pair<ProductModel, FavoriteItem>>> {
+        return repository.loadFavorites(userId)
+    }
+
+    fun toggleProductFavorite(userId: String, productId: String): LiveData<Boolean> {
+        return repository.toggleProductFavorite(userId, productId)
     }
 
     fun loadUser(userId:String): LiveData<MutableList<UserModel>> {

@@ -40,7 +40,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun initProfile()
     {
-        binding.usernameText.text = SessionManager.getUserId(this)
+        binding.usernameText.text = SessionManager.getUserName(this)
         binding.emailText.text = SessionManager.getUserEmail(this)
     }
 }

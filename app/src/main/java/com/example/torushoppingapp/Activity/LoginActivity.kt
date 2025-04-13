@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityLoginBinding
@@ -17,13 +18,21 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
-        if (isLoggedIn) {
+        if (SessionManager.isLoggedIn(this@LoginActivity)) {
+            if (SessionManager.getTheme(this@LoginActivity) == 0)
+            {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else if (SessionManager.getTheme(this@LoginActivity) == 1) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+
             startActivity(Intent(this, MainActivity::class.java))
             finish()
             return
         }
+
+        SessionManager.setTheme(this@LoginActivity, 1)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -109,6 +109,8 @@ class CartActivity : AppCompatActivity() {
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun notifyUser(title: String = "Order Confirmed", message: String = "Thank you for your order!", delay: Long = 10000)
     {
+        if (SessionManager.getNotifications(this) == 0) return
+
         CustomNotificationManager(this).scheduleNotification(
             channelId = "order_channel",
             notificationId = 1,

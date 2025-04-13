@@ -25,6 +25,29 @@ object SessionManager {
         return prefs.getBoolean("isLoggedIn", false)
     }
 
+    fun getTheme(context: Context): Int {
+        val prefs = context.getSharedPreferences("SettingsPrefs", Context.MODE_PRIVATE)
+        return prefs.getInt("theme", 0)
+    }
+    fun setTheme(context: Context, theme: Int) {
+        val prefs = context.getSharedPreferences("SettingsPrefs", Context.MODE_PRIVATE)
+        prefs.edit {
+            putInt("theme", theme)
+        }
+    }
+
+    fun getNotifications(context: Context): Int {
+        val prefs = context.getSharedPreferences("NotificationsPrefs", Context.MODE_PRIVATE)
+        return prefs.getInt("notifications", 0)
+    }
+
+    fun setNotifications(context: Context, notifications: Int) {
+        val prefs = context.getSharedPreferences("NotificationsPrefs", Context.MODE_PRIVATE)
+        prefs.edit {
+            putInt("notifications", notifications)
+        }
+    }
+
     fun logout(context: Context) {
         val prefs = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
         prefs.edit() { clear() }

@@ -6,6 +6,8 @@ import com.example.torushoppingapp.Domain.BannerModel
 import com.example.torushoppingapp.Domain.CartItem
 import com.example.torushoppingapp.Domain.CartModel
 import com.example.torushoppingapp.Domain.CategoryModel
+import com.example.torushoppingapp.Domain.FavoriteItem
+import com.example.torushoppingapp.Domain.FavoriteModel
 import com.example.torushoppingapp.Domain.OrderItem
 import com.example.torushoppingapp.Domain.OrderModel
 import com.example.torushoppingapp.Domain.ProductModel
@@ -130,6 +132,112 @@ class MainRepository {
             }
         })
         return liveData
+    }
+
+    fun loadFavorites(userId: String): LiveData<MutableList<Pair<ProductModel, FavoriteItem>>> {
+        val liveData = MutableLiveData<MutableList<Pair<ProductModel, FavoriteItem>>>()
+        val favoriteRef = firebaseDatabase.getReference("favorites")
+        val productsRef = firebaseDatabase.getReference("products")
+
+        val query = favoriteRef.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var favoriteItems: List<FavoriteItem> = listOf()
+                for (favoriteSnapshot in snapshot.children) {
+                    val favoriteModel = favoriteSnapshot.getValue(FavoriteModel::class.java)
+                    if (favoriteModel != null) {
+                        favoriteItems = favoriteModel.items
+                        break
+                    }
+                }
+                if (favoriteItems.isEmpty()) {
+                    liveData.value = mutableListOf()
+                    return
+                }
+
+                val productList = mutableListOf<Pair<ProductModel, FavoriteItem>>()
+                var remainingItems = favoriteItems.size
+
+                // For each favorite item, fetch the product details
+                for (favoriteItem in favoriteItems) {
+                    productsRef.child(favoriteItem.productId)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(productSnapshot: DataSnapshot) {
+                                val product = productSnapshot.getValue(ProductModel::class.java)
+                                product?.let {
+                                    productList.add(Pair(it, favoriteItem))
+                                }
+                                remainingItems--
+                                if (remainingItems == 0) {
+                                    liveData.value = productList
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                remainingItems--
+                                if (remainingItems == 0) {
+                                    liveData.value = productList
+                                }
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                liveData.value = mutableListOf()
+            }
+        })
+
+        return liveData
+    }
+
+    fun toggleProductFavorite(userId: String, productId: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val favoriteRef = firebaseDatabase.getReference("favorites")
+        val query = favoriteRef.orderByChild("user_id").equalTo(userId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var favoriteKey: String? = null
+                var favorite: FavoriteModel? = null
+                for (child in snapshot.children) {
+                    val model = child.getValue(FavoriteModel::class.java)
+                    if (model != null && model.userId == userId) {
+                        favoriteKey = child.key
+                        favorite = model
+                        break
+                    }
+                }
+                val updatedItems = favorite?.items?.toMutableList() ?: mutableListOf()
+                if (updatedItems.any { it.productId == productId }) {
+                    updatedItems.removeAll { it.productId == productId }
+                } else {
+                    updatedItems.add(FavoriteItem(productId = productId))
+                }
+                if (favoriteKey != null && favorite != null) {
+                    val updatedFavorite = FavoriteModel(
+                        id = favorite.id,
+                        userId = favorite.userId,
+                        items = updatedItems
+                    )
+                    favoriteRef.child(favoriteKey).setValue(updatedFavorite)
+                        .addOnCompleteListener { task -> result.value = task.isSuccessful }
+                } else {
+                    val newFavoriteRef = favoriteRef.push()
+                    val newFavoriteId = newFavoriteRef.key ?: return
+                    val newFavorite = FavoriteModel(
+                        id = newFavoriteId,
+                        userId = userId,
+                        items = updatedItems
+                    )
+                    newFavoriteRef.setValue(newFavorite)
+                        .addOnCompleteListener { task -> result.value = task.isSuccessful }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                result.value = false
+            }
+        })
+        return result
     }
 
 

@@ -41,21 +41,11 @@ class MainActivity : AppCompatActivity() {
         initPopular()
     }
 
-    var darkMode = false
     private fun initButtons()
     {
         binding.apply {
             settingsButton.setOnClickListener {
-                if (darkMode)
-                {
-                    darkMode = false
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-                else
-                {
-                    darkMode = true
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             }
 
 
@@ -85,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             favoritesButton.setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, FavoritesListActivity::class.java))
             }
 
             ordersButton.setOnClickListener {
