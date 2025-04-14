@@ -49,7 +49,7 @@ class MainViewModel: ViewModel() {
         return repository.toggleProductFavorite(userId, productId)
     }
 
-    fun loadUser(userId:String): LiveData<MutableList<UserModel>> {
+    fun loadUser(userId:String): LiveData<UserModel?> {
         return repository.loadUser(userId)
     }
 
@@ -67,6 +67,14 @@ class MainViewModel: ViewModel() {
 
     fun postReview(productId:String, userId: String, rating: Double, comment: String) : LiveData<MutableList<ReviewModel>> {
         return repository.postReview(productId, userId, rating, comment)
+    }
+
+    fun getReviewCount(productId:String) : LiveData<Int> {
+        return repository.getReviewCount(productId)
+    }
+
+    fun getAverageRating(productId:String) : LiveData<Double> {
+        return repository.getAverageRating(productId)
     }
 
     fun loadProductsFromCart(userId:String) : LiveData<MutableList<Pair<ProductModel, CartItem>>> {

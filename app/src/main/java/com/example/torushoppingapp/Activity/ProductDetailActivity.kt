@@ -28,8 +28,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
         viewModel = MainViewModel()
 
-        initButtons()
         bundle()
+        initButtons()
     }
 
     private fun initButtons()
@@ -53,6 +53,22 @@ class ProductDetailActivity : AppCompatActivity() {
                     }
             }
 
+
+            viewModel.getReviewCount(product.id).observe(this@ProductDetailActivity, Observer { success ->
+                if (success != null) {
+                    if (success == 0) reviewNumText.text = "No"
+                    else reviewNumText.text = success.toString()
+                } else {
+                    reviewNumText.text = "No"
+                }
+            })
+            viewModel.getAverageRating(product.id).observe(this@ProductDetailActivity, Observer { success ->
+                if (success != null) {
+                    ratingBar.rating = success.toString().toFloat()
+                } else {
+                    ratingBar.rating = 0f
+                }
+            })
             reviewButton.setOnClickListener {
                 val intent = Intent(this@ProductDetailActivity, ReviewListActivity::class.java)
                 intent.putExtra("id", product.id)

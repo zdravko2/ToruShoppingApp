@@ -265,27 +265,26 @@ class MainRepository {
         return userData
     }
 
-    fun loadUser(userId: String): LiveData<MutableList<UserModel>> {
-        val listData = MutableLiveData<MutableList<UserModel>>()
+    fun loadUser(userId: String): LiveData<UserModel?> {
+        val userData = MutableLiveData<UserModel?>()
         val ref = firebaseDatabase.getReference("users")
 
-        val query: Query = ref.orderByChild("user_id").equalTo(userId)
+        val query: Query = ref.orderByChild("id").equalTo(userId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<UserModel>()
                 for (childSnapshot in snapshot.children) {
                     val user = childSnapshot.getValue(UserModel::class.java)
-                    user?.let { list.add(it) }
+                    userData.value = user
+                    return
                 }
-                listData.value = list
+                userData.value = null
             }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         })
-        return listData
+        return userData
     }
 
     fun registerUser(user: UserModel): LiveData<UserModel?> {
@@ -408,6 +407,49 @@ class MainRepository {
 
         return result
     }
+
+    fun getReviewCount(productId: String): LiveData<Int> {
+        val countData = MutableLiveData<Int>()
+        val ref = firebaseDatabase.getReference("reviews")
+
+        val query: Query = ref.orderByChild("product_id").equalTo(productId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                countData.value = snapshot.children.count()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+        return countData
+    }
+
+    fun getAverageRating(productId: String): LiveData<Double> {
+        val averageData = MutableLiveData<Double>()
+        val ref = firebaseDatabase.getReference("reviews")
+
+        val query: Query = ref.orderByChild("product_id").equalTo(productId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var sum = 0.0
+                for (childSnapshot in snapshot.children) {
+                    val review = childSnapshot.getValue(ReviewModel::class.java)
+                    val rating = review?.rating ?: 0.0
+                    sum = sum + rating
+                }
+                averageData.value = sum / snapshot.children.count()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+        return averageData
+    }
+
 
     fun loadProductsFromCart(userId: String): LiveData<MutableList<Pair<ProductModel, CartItem>>> {
         val liveData = MutableLiveData<MutableList<Pair<ProductModel, CartItem>>>()
