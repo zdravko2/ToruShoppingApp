@@ -15,6 +15,7 @@ import com.example.torushoppingapp.Domain.ProductModel
 import com.example.torushoppingapp.Helper.SessionManager
 import com.example.torushoppingapp.ViewModel.MainViewModel
 import com.example.torushoppingapp.databinding.ActivityProductDetailBinding
+import kotlin.math.round
 
 class ProductDetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityProductDetailBinding
@@ -91,10 +92,12 @@ class ProductDetailActivity : AppCompatActivity() {
                 val text = quantityText.text.toString()
                 val number = text.toIntOrNull() ?: 0
                 val updatedNumber = number - 1
-
                 if (updatedNumber > 0)
                 {
+                    val scale = 100
+                    val rounded = round((product.price * updatedNumber) * scale) / scale
                     quantityText.text = updatedNumber.toString()
+                    priceText.text = "$" + rounded.toString()
                 }
             }
 
@@ -105,7 +108,10 @@ class ProductDetailActivity : AppCompatActivity() {
 
                 if (updatedNumber <= product.stock)
                 {
+                    val scale = 100
+                    val rounded = round((product.price * updatedNumber) * scale) / scale
                     quantityText.text = updatedNumber.toString()
+                    priceText.text = "$" + rounded.toString()
                 }
                 else
                 {
