@@ -61,7 +61,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun tryLogin(email: String, password: String) {
-        val userLiveData = viewModel.validateUser(email, password)
+        val hashedPass = PasswordUtilities.hashPassword(password)
+        val userLiveData = viewModel.validateUser(email, hashedPass)
         userLiveData.observe(this) { user ->
             if (user != null) {
                 Toast.makeText(this, "Welcome, ${user.name}!", Toast.LENGTH_SHORT).show()

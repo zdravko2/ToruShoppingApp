@@ -37,7 +37,8 @@ class RegisterActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                tryRegister(username, email, password)
+                val hashedPass = PasswordUtilities.hashPassword(password)
+                tryRegister(username, email, hashedPass)
             }
 
             cancelButton.setOnClickListener {
